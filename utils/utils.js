@@ -1,20 +1,20 @@
 let mysql = require('mysql');
 let pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'sys'
+  host: 'localhost',
+  user: 'root',
+  password: '12345678',
+  database: 'sys'
 });
-const query = function (sql, option, callback) {
-    pool.getConnection(function (err, connection) {
-        console.log('getConnection => ' + err);
-        connection.query(sql, option, function (error, results, fields) {
-            console.log('query => ' + error);
-            connection.release();
-            if (error) throw error;
-            callback(err, results, fields)
-        })
+const query = function (sql, callback) {
+  pool.getConnection(function (err, connection) {
+    console.log('getConnection => ' + err);
+    connection.query(sql, function (error, results) {
+      console.log('query => ' + error);
+      if (error) throw error;
+      callback(err, results)
+      connection.release();
     })
+  })
 };
 
 module.exports = query;

@@ -1,11 +1,24 @@
-var express = require('express');
-var router = express.Router();
+let express = require('express');
+let router = express.Router();
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-  console.log(req.headers);
-  console.log(req.ip);
-  res.send({code: 200, data: { title: 'users' }});
+const query = require('../utils/utils');
+
+router.post('/info', (req, res) => {
+  let name = req.body.name;
+  let sql = `SELECT bk_id,bk_name,bk_author,bk_pic FROM bk_list WHERE bk_name='${name}'`;
+  if (!name) {
+    sql = `SELECT bk_id,bk_name,bk_author,bk_pic FROM bk_list`;
+  }
+  query(sql, (err, result) => {
+    if (err) {
+      throw err
+    } else {
+      res.send({
+        code: 200,
+        data: result
+      })
+    }
+  })
 });
 
 module.exports = router;
