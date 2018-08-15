@@ -7,11 +7,9 @@ let pool = mysql.createPool({
 });
 const query = function (sql, callback) {
   pool.getConnection(function (err, connection) {
-    console.log('getConnection => ' + err);
     connection.query(sql, function (error, results) {
-      console.log('query => ' + error);
       if (error) throw error;
-      callback(err, results)
+      callback(err, results);
       connection.release();
     })
   })

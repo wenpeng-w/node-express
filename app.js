@@ -16,4 +16,4 @@ app.use(bodyParser.json());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-app.listen(process.env.PORT || '3000', '192.168.90.122')
+app.listen(process.env.PORT || '3000', '192.168.90.231');
