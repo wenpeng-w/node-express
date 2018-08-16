@@ -8,7 +8,10 @@ let pool = mysql.createPool({
 const query = function (sql, callback) {
   pool.getConnection(function (err, connection) {
     connection.query(sql, function (error, results) {
-      if (error) throw error;
+      if (error) {
+        throw error;
+        return;
+      }
       callback(err, results);
       connection.release();
     })

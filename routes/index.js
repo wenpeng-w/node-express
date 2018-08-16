@@ -15,7 +15,10 @@ router.get('/book', (req, res) => {
     return;
   }
   query(sql, (err, result) => {
-    if (err) console.log(err);
+    if (err) {
+      console.log(err);
+      return;
+    }
     res.send({
       code: 200,
       data: result
@@ -23,8 +26,8 @@ router.get('/book', (req, res) => {
   })
 });
 
-router.post('/search', (req, res) => {
-  let name = req.body.name;
+router.get('/search', (req, res) => {
+  let name = req.query.name;
   let sql = `SELECT bk_id,bk_name,bk_author,bk_pic FROM bk_list WHERE bk_name LIKE '%${name}%'`;
   query(sql, (err, result) => {
     if (err) {
@@ -51,7 +54,10 @@ router.post('/add', (req, res) => {
   }
   let sql_num = `SELECT COUNT(*) AS num FROM bk_list WHERE bk_name='${bk_name}'`;
   query(sql_num, (err, result) => {
-    if (err) console.log(err);
+    if (err) {
+      console.log(err);
+      return;
+    }
     if (result[0].num > 0) {
       res.send({
         code: 200,
