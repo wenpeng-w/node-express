@@ -80,4 +80,35 @@ router.post('/add', (req, res) => {
   });
 });
 
+router.post('/update', (req, res) => {
+  let bk_id = req.body.bk_id;
+  let bk_name = req.body.bk_name;
+  let bk_author = req.body.bk_author;
+  let bk_pic = req.body.bk_pic;
+
+  let sql_bkId = `SELECT bk_id FROM bk_list WHERE bk_id=${bk_id}`;
+  query(sql_bkId, (err, result) => {
+    if (err) {
+      console.log(err);
+    } else if (!result.length) {
+      res.send({
+        code: 200,
+        msg: '信息不存在'
+      })
+    } else {
+      let sql = `UPDATE bk_list SET bk_name='${bk_name}', bk_author='${bk_author}', bk_pic='${bk_pic}' WHERE bk_id=${bk_id}`;
+      query(sql, (err) => {
+        if (err) {
+          console.log(err)
+        } else {
+          res.send({
+            code: 200,
+            msg: '更新成功'
+          })
+        }
+      });
+    }
+  });
+});
+
 module.exports = router;
