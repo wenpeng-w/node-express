@@ -26,9 +26,9 @@ router.get('/book', (req, res) => {
   })
 });
 
-router.get('/search', (req, res) => {
-  let name = req.query.name;
-  let sql = `SELECT bk_id,bk_name,bk_author,bk_pic FROM bk_list WHERE bk_name LIKE '%${name}%'`;
+router.post('/search', (req, res) => {
+  let name = req.body.name;
+  let sql = `SELECT bk_id,bk_name,bk_author,bk_pic FROM bk_list WHERE bk_name LIKE '%${name}%' ORDER BY bk_id DESC`;
   query(sql, (err, result) => {
     if (err) {
       console.log(err);
@@ -109,6 +109,21 @@ router.post('/update', (req, res) => {
       });
     }
   });
+});
+
+router.post('/delete', (req, res) => {
+  let bk_id = req.body.bk_id;
+  let sql = `DELETE FROM bk_list WHERE bk_id=${bk_id}`;
+  query(sql, (err) => {
+    if (err) {
+      console.log(err)
+    } else {
+      res.send({
+        code: 200,
+        msg: '删除成功'
+      })
+    }
+  })
 });
 
 module.exports = router;
