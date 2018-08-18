@@ -1,5 +1,31 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+  div
+    input(type='file', value='上传图片')#uploadImage
+  script.
+    window.onload = function () {
+      var formData = new FormData();
+      var uploadImageBtn = $('#uploadImage');
+      uploadImageBtn.bind('change', function () {
+        var img_file = uploadImageBtn[0].files[0];
+        if (!img_file) {
+          return;
+        }
+        formData.append("modal_file", img_file);
+        $.ajax({
+          type: 'post',
+          dataType: 'json',
+          url: 'http://192.168.90.42:3000/uploads/image',
+          data: formData,
+          contentType: false,
+          processData: false,
+          success: function () {
+            console.log('success');
+          },
+          error: function (err) {
+            console.log(err);
+          }
+        })
+      })
+    };

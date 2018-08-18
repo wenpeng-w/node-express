@@ -1,6 +1,11 @@
 let express = require('express');
 let router = express.Router();
 
+/* GET home page. */
+router.get('/', function(req, res, next) {
+  res.render('index', {title: 'Express'});
+});
+
 const query = require('../utils/utils');
 
 router.get('/book', (req, res) => {
@@ -77,7 +82,7 @@ router.post('/add', (req, res) => {
         }
       })
     }
-  });
+  })
 });
 
 router.post('/update', (req, res) => {
@@ -106,9 +111,9 @@ router.post('/update', (req, res) => {
             msg: '更新成功'
           })
         }
-      });
+      })
     }
-  });
+  })
 });
 
 router.post('/delete', (req, res) => {
