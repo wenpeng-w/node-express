@@ -2,7 +2,7 @@ extends layout
 
 block content
   div
-    input(type='file', value='上传图片')#uploadImage
+    input(type='file', value='上传图片' accept='image/*')#uploadImage
   script.
     window.onload = function () {
       var formData = new FormData();
@@ -20,8 +20,8 @@ block content
           data: formData,
           contentType: false,
           processData: false,
-          success: function () {
-            console.log('success');
+          success: function (success) {
+            console.log(success);
           },
           error: function (err) {
             console.log(err);
