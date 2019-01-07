@@ -1,7 +1,7 @@
 let express = require('express');
 let router = express.Router();
 
-const query = require('../utils/utils');
+const utils = require('../utils/utils');
 
 router.post('/info', (req, res) => {
   let name = req.body.name;
@@ -9,7 +9,7 @@ router.post('/info', (req, res) => {
   if (!name) {
     sql = `SELECT bk_id,bk_name,bk_author,bk_pic FROM bk_list`;
   }
-  query(sql, (err, result) => {
+  utils.query(sql, (err, result) => {
     if (err) {
       throw err
     } else {

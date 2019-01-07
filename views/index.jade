@@ -3,23 +3,33 @@ extends layout
 block content
   div
     input(type='file', value='上传图片' accept='image/*')#uploadImage
+    p(id='progress')
   script.
     window.onload = function () {
-      var formData = new FormData();
       var uploadImageBtn = $('#uploadImage');
       uploadImageBtn.bind('change', function () {
         var img_file = uploadImageBtn[0].files[0];
-        if (!img_file) {
-          return;
-        }
+        if (!img_file) return;
+        var formData = new FormData();
         formData.append("modal_file", img_file);
         $.ajax({
           type: 'post',
           dataType: 'json',
-          url: 'http://192.168.90.42:3000/uploads/image',
+          url: window.location.href + 'uploads/image',
           data: formData,
           contentType: false,
           processData: false,
+          xhr: function () {
+            var xhr = $.ajaxSettings.xhr(); // 获取 xhr 对象
+            xhr.upload.addEventListener('progress', function (ev) {
+              var loaded = ev.loaded;
+              var total = ev.total;
+              var progress = Math.ceil(100 * loaded / total) + '%';
+              console.log(ev);
+              $('#progress').text(progress)
+            })
+            return xhr;
+          },
           success: function (success) {
             console.log(success);
           },

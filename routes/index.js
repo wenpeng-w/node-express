@@ -6,7 +6,7 @@ router.get('/', function(req, res, next) {
   res.render('index', {title: 'Express'});
 });
 
-const query = require('../utils/utils');
+const utils = require('../utils/utils');
 
 router.get('/book', (req, res) => {
   let id = req.query.id;
@@ -19,7 +19,7 @@ router.get('/book', (req, res) => {
     });
     return;
   }
-  query(sql, (err, result) => {
+  utils.query(sql, (err, result) => {
     if (err) {
       console.log(err);
       return;
@@ -34,7 +34,7 @@ router.get('/book', (req, res) => {
 router.post('/search', (req, res) => {
   let name = req.body.name;
   let sql = `SELECT bk_id,bk_name,bk_author,bk_pic FROM bk_list WHERE bk_name LIKE '%${name}%' ORDER BY bk_id DESC`;
-  query(sql, (err, result) => {
+  utils.query(sql, (err, result) => {
     if (err) {
       console.log(err);
     } else {
@@ -58,7 +58,7 @@ router.post('/add', (req, res) => {
     return;
   }
   let sql_num = `SELECT COUNT(*) AS num FROM bk_list WHERE bk_name='${bk_name}'`;
-  query(sql_num, (err, result) => {
+  utils.query(sql_num, (err, result) => {
     if (err) {
       console.log(err);
       return;
@@ -70,7 +70,7 @@ router.post('/add', (req, res) => {
       });
     } else {
       let sql = `INSERT INTO bk_list(bk_name, bk_author, bk_pic) SELECT '${bk_name}', '${bk_author}', '${bk_pic}' FROM DUAL WHERE NOT EXISTS(SELECT bk_name FROM bk_list WHERE bk_name='${bk_name}')`;
-      query(sql, (err, result) => {
+      utils.query(sql, (err, result) => {
         if (err) {
           console.log(err);
         } else {
@@ -92,7 +92,7 @@ router.post('/update', (req, res) => {
   let bk_pic = req.body.bk_pic;
 
   let sql_bkId = `SELECT bk_id FROM bk_list WHERE bk_id=${bk_id}`;
-  query(sql_bkId, (err, result) => {
+  utils.query(sql_bkId, (err, result) => {
     if (err) {
       console.log(err);
     } else if (!result.length) {
@@ -102,7 +102,7 @@ router.post('/update', (req, res) => {
       })
     } else {
       let sql = `UPDATE bk_list SET bk_name='${bk_name}', bk_author='${bk_author}', bk_pic='${bk_pic}' WHERE bk_id=${bk_id}`;
-      query(sql, (err) => {
+      utils.query(sql, (err) => {
         if (err) {
           console.log(err)
         } else {
@@ -119,7 +119,7 @@ router.post('/update', (req, res) => {
 router.post('/delete', (req, res) => {
   let bk_id = req.body.bk_id;
   let sql = `DELETE FROM bk_list WHERE bk_id=${bk_id}`;
-  query(sql, (err) => {
+  utils.query(sql, (err) => {
     if (err) {
       console.log(err)
     } else {
